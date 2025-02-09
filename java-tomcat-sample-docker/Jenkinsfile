@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'node:latest'   // Example: Using Node.js inside Docker
             args '--network=host' // Optional
-            remote 'tcp://192.168.122.5:2375'
+            DOCKER_HOST= 'tcp://192.168.122.5:2375'
         }
     }
     stages {
