@@ -1,12 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.6-openjdk-11'
-        }
-    }
-    environment {
-        DOCKER_HOST = "tcp://192.168.122.5:2375"
-    }
+    agent any
     stages {
         stage('Build Application') {
             steps {
@@ -19,15 +12,14 @@ pipeline {
                 }
             }
         }
-        stage('Create Tomcat Docker Image') {
+
+        stage('Create Tomcat Docker Image'){
             steps {
-                sh 'pwd'
-                sh 'ls -a'
-                script {
-                    def imageTag = "tomcatsamplewebapp:${env.BUILD_ID}"
-                    sh "docker build -t ${imageTag} ./java-tomcat-sample-docker"
-                }
+                sh "pwd"
+                sh "ls -a"
+                sh "docker build ./java-tomcat-sample-docker -t tomcatsamplewebapp:${env.BUILD_ID}"
             }
         }
+
     }
 }
