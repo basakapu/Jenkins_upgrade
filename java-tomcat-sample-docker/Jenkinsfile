@@ -1,6 +1,10 @@
 pipeline {
     agent any
     stages {
+        stage('Initialize'){
+                def dockerHome = tool 'myDocker'
+                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+    }        
         stage('Build Application') {
             steps {
                 sh 'mvn -f java-tomcat-sample/pom.xml clean package'
@@ -11,11 +15,7 @@ pipeline {
                     archiveArtifacts artifacts: '**/*.war'
                 }
             }
-        }
-             stage('Initialize'){
-                def dockerHome = tool 'myDocker'
-                    env.PATH = "${dockerHome}/bin:${env.PATH}"
-    }
+
         stage('Create Tomcat Docker Image'){
             steps {
                 sh "pwd"
